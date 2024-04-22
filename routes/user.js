@@ -56,8 +56,8 @@ router.post("/upload", upload.single("file"), async (req, res) => {
   }
 });
 
-router.get("/:ticket", async (req, res) => {
-  const { ticket } = req.params;
+router.post("/res", async (req, res) => {
+  const { ticket } = req.body;
 
   try {
     const user = await User.findOne({ hallTicketNumber: ticket });
