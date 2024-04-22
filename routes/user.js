@@ -57,10 +57,10 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 });
 
 router.post("/res", async (req, res) => {
-  const { ticket } = req.body;
+  const { hallTicketNumber } = req.body;
 
   try {
-    const user = await User.findOne({ hallTicketNumber: ticket });
+    const user = await User.findOne({ hallTicketNumber });
     if (!user) {
       return res.status(200).json({ message: "No User Found" });
     }
