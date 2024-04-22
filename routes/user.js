@@ -19,15 +19,24 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     const users = xlsx.utils.sheet_to_json(sheet);
 
     const expectedColumns = [
-      "Name",
-      "Hallticket_Number",
-      "Result",
-      "Telugu",
-      "Hindi",
-      "English",
-      "Mathematics",
-      "Science",
-      "Social",
+      "NAME",
+      "ROLLNO",
+      "L1_MRK",
+      "L1_RSLT",
+      "L2_MRK",
+      "L2_RSLT",
+      "L3_MRK",
+      "L3_RSLT",
+      "MAT_MRK",
+      "MAT_RSLT",
+      "SCI_MRK",
+      "SCI_RSLT",
+      "SOC_MRK",
+      "SOC_RSLT",
+      "RESULT",
+      "G_TOT",
+      "FNAME",
+      "DT_NAME",
     ];
     const actualColumns = Object.keys(users[0] || {});
     if (!expectedColumns.every((col) => actualColumns.includes(col))) {
@@ -35,17 +44,26 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     }
 
     const mappedUsers = users.map((user) => ({
-      name: user.Name,
-      hallTicketNumber: user.Hallticket_Number,
-      result: user.Result,
+      name: user.NAME,
+      hallTicketNumber: user.ROLLNO,
+      result: user.RESULT,
+      dist: user.DT_NAME,
+      father_name: user.FNAME,
       marks: {
-        telugu: user.Telugu,
-        hindi: user.Hindi,
-        english: user.English,
-        mathematics: user.Mathematics,
-        science: user.Science,
-        social: user.Social,
+        telugu: user.L1_MRK,
+        hindi: user.L2_MRK,
+        english: user.L3_MRK,
+        mathematics: user.MAT_MRK,
+        science: user.SCI_MRK,
+        social: user.SOC_MRK,
+        t_pass: user.L1_RSLT,
+        h_pass: user.L2_RSLT,
+        e_pass: user.L3_RSLT,
+        m_pass: user.MAT_RSLT,
+        sci_pass: user.SCI_RSLT,
+        soc_pass: user.SOC_RSLT,
       },
+      total: String,
     }));
 
     await User.create(mappedUsers);
